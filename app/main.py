@@ -1,5 +1,19 @@
-from ui.views.main_window import MainWindow
+import tkinter as tk
+#from models.database import create_tables
+from ui.views.register_view import RegisterView
 
-if __name__ == '__main__':
-  app = MainWindow()
-  app.mainloop()
+def open_register():
+    for widget in root.winfo_children():
+        widget.destroy()
+    RegisterView(root, open_login)
+
+def open_login():
+    for widget in root.winfo_children():
+        widget.destroy()
+    # aqui você criará LoginView depois
+    tk.Label(root, text="Tela de login futura").pack()
+
+root = tk.Tk()
+#create_tables()
+open_register()
+root.mainloop()

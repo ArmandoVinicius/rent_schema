@@ -1,24 +1,19 @@
 import tkinter as tk
-from tkinter import ttk
-from ui.controllers.main_controller import MainController
-from ui.styles.theme import apply_theme
+#from models.database import create_tables
+from views.register_view import RegisterView
 
-class MainWindow(tk.TK):
-  def __init__(self):
-    super().__init__()
-  
-    self.title('Aluguel de Carros')
-    self.geometry('900x600')
-    
-    apply_theme(self)
+def open_register():
+    for widget in root.winfo_children():
+        widget.destroy()
+    RegisterView(root, open_login)
 
-    self.controller = MainController()
+def open_login():
+    for widget in root.winfo_children():
+        widget.destroy()
+    # aqui você criará LoginView depois
+    tk.Label(root, text="Tela de login futura").pack()
 
-    ttk.Label(self, texxt="Tela Principal", font=("Arial", 18)).pack(pady=20)
-
-    ttk.Button(self, text="Testar Conexão com BD", command=self.test_db).pack(pady=10)
-
-  def test_db(self):
-    ok = self.controller.test_connection()
-    msg = "Conexão bem sucedida!" if ok else "Falha na conexão."
-    tk.messagebox.showinfo("Resultado", msg)
+root = tk.Tk()
+#create_tables()
+open_register()
+root.mainloop()
