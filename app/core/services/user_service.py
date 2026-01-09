@@ -12,7 +12,8 @@ class UserService:
       return False, "As senhas não coincidem."
     if self.user_model.get_user_by_email(email=email):
       return False, "Este email já está cadastrado."
-
+    
+    # Olhar o bcrypt para adicionar o tempo na seed
     senha_hash = hashlib.sha256(senha.encode()).hexdigest()
 
     try:

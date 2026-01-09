@@ -1,0 +1,2 @@
+-- Comandos DDL e DML separados
+-- Comandos de relatório (qual cliente alugou mais carros, qual carro mais alugado)
