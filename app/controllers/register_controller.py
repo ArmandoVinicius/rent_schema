@@ -8,12 +8,14 @@ class RegisterController:
     self.view = view
   
   def register(self):
+    cpf = self.view.get_cpf()
     nome = self.view.get_nome()
-    email = self.view.get_email()
+    cnh = self.view.get_cnh()
+    telefone = self.view.get_telefone()
     senha = self.view.get_senha()
     confirm = self.view.get_confirm()
     
-    result, msg = self.user_service.register_user(nome, email, senha, confirm)
+    result, msg = self.user_service.register_user(cpf, nome, cnh, telefone, senha, confirm)
     
     if result:
       self.view.show_info("Sucesso!", msg)

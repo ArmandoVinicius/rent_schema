@@ -50,6 +50,7 @@ A arquitetura segue o padrão **MVC + Services**, garantindo separação entre:
 ```bash
 pip install -r requirements.txt
 ```
+Antes de instalar as dependências, é necessário ter a biblioteca [MariaDB Connector/C](https://mariadb.com/docs/connectors/mariadb-connector-c/install-mariadb-connector-c) instalada no sistema, para que o pacote **mariadb** seja instalado corretamente.
 
 ### 2) Criar o arquivo de configuração do banco
 

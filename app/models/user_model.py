@@ -5,22 +5,22 @@ class UserModel:
   def __init__(self):
     pass
   
-  def create_user(self, nome: str, email: str, senha_hash: str):
+  def create_user(self, cpf: str, nome: str, cnh: str, telefone: str, senha_hash: str):
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
     cursor.execute("""
-      INSERT INTO clientes (nome, email, senha)
-      VALUES (?, ?, ?)
-    """, (nome, email, senha_hash))
+      INSERT INTO Cliente (CPF, Nome, CNH, Telefone, senha)
+      VALUES (?, ?, ?, ?, ?)
+    """, (cpf, nome, cnh, telefone, senha_hash))
 
     conn.commit()
     cursor.close()
     conn.close()
 
-  def get_user_by_email(self, email: str) -> bool:
+  def get_user_by_cpf(self, cpf: str) -> bool:
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM clientes WHERE email = ?", (email,))
+    cursor.execute("SELECT ID_cliente FROM Cliente WHERE cpf = ?", (cpf,))
     result = cursor.fetchone()
 
     cursor.close()

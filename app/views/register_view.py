@@ -10,7 +10,7 @@ class RegisterView:
     self.controller.set_view(self)
 
     root.title("Registro - Aluguel de Carros")
-    root.geometry("400x380")
+    root.geometry("400x580")
     root.resizable(False, False)
 
     self.build_ui()
@@ -24,13 +24,21 @@ class RegisterView:
 
     ttk.Label(frame, text="Cadastro de Usuário", font=("Arial", 16, "bold")).pack(pady=10)
 
+    ttk.Label(frame, text="CPF (Apenas números):").pack(anchor="w")
+    self.entry_cpf = ttk.Entry(frame, width=40)
+    self.entry_cpf.pack()
+
     ttk.Label(frame, text="Nome completo:").pack(anchor="w")
     self.entry_nome = ttk.Entry(frame, width=40)
     self.entry_nome.pack()
 
-    ttk.Label(frame, text="Email:").pack(anchor="w")
-    self.entry_email = ttk.Entry(frame, width=40)
-    self.entry_email.pack()
+    ttk.Label(frame, text="CNH:").pack(anchor="w")
+    self.entry_cnh = ttk.Entry(frame, width=40)
+    self.entry_cnh.pack()
+
+    ttk.Label(frame, text="Telefone:").pack(anchor="w")
+    self.entry_telefone = ttk.Entry(frame, width=40)
+    self.entry_telefone.pack()
 
     ttk.Label(frame, text="Senha:").pack(anchor="w")
     self.entry_senha = ttk.Entry(frame, width=40, show="*")
@@ -50,11 +58,17 @@ class RegisterView:
       command=self.on_login_click
     ).pack()
 
+  def get_cpf(self):
+    return self.entry_cpf.get().strip()
+  
   def get_nome(self):
     return self.entry_nome.get().strip()
   
-  def get_email(self):
-    return self.entry_email.get().strip()
+  def get_cnh(self):
+    return self.entry_cnh.get().strip()
+  
+  def get_telefone(self):
+    return self.entry_telefone.get().strip()
     
   def get_senha(self):
     return self.entry_senha.get()
