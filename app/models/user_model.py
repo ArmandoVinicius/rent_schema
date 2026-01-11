@@ -22,7 +22,6 @@ class UserModel:
     cursor = conn.cursor()
     cursor.execute("SELECT ID_cliente FROM Cliente WHERE cpf = ?", (cpf,))
     result = cursor.fetchone()
-    print(result)
 
     cursor.close()
     conn.close()
