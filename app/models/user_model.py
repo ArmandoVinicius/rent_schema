@@ -22,6 +22,7 @@ class UserModel:
     cursor = conn.cursor()
     cursor.execute("SELECT ID_cliente FROM Cliente WHERE cpf = ?", (cpf,))
     result = cursor.fetchone()
+    print(result)
 
     cursor.close()
     conn.close()
@@ -31,6 +32,14 @@ class UserModel:
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
     cursor.execute(f"UPDATE Cliente SET {field} = ? WHERE cpf = ?", (value,cpf))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+  def delete_user(self, cpf: str):
+    conn = DatabaseConnection.get_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"DELETE FROM Cliente WHERE cpf = ?", (cpf,))
     conn.commit()
     cursor.close()
     conn.close()
