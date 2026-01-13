@@ -1,5 +1,5 @@
 import mariadb
-from config.settings import DB_CONFIG
+from ..config.settings import DB_CONFIG
 
 class DatabaseConnection:
   @staticmethod
