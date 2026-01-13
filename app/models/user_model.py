@@ -19,13 +19,13 @@ class UserModel:
 
   def get_user_by_cpf(self, cpf: str) -> bool:
     conn = DatabaseConnection.get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT ID_cliente FROM Cliente WHERE CPF = %s", (cpf,))
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM Cliente WHERE CPF = %s", (cpf,))
     result = cursor.fetchone()
 
     cursor.close()
     conn.close()
-    return result is not None
+    return result if result is not None else None
 
   def update_user(self, cpf: str, field: str, value: str | int | float):
     conn = DatabaseConnection.get_connection()

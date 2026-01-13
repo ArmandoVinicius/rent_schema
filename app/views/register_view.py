@@ -1,7 +1,7 @@
 # src/views/register_view.py
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
+import ttkbootstrap as ttk
 from app.utils.ui import center_window
 
 class RegisterView:
@@ -18,8 +18,15 @@ class RegisterView:
     self.build_ui()
 
   def build_ui(self):
-    style = ttk.Style()
-    style.configure('Green.TButton',  background="#4CAF50", foreground="white")
+    # style = ttk.Style()
+    # style.theme_use('clam')
+    # style.configure(
+    #   "Green.TButton",
+    #   background="#4CAF50",
+    #   foreground="white",
+    #   padding=6,
+    #   borderwidth=0
+    # )
 
     frame = tk.Frame(self.root, padx=20, pady=20)
     frame.pack(expand=True)
@@ -51,12 +58,12 @@ class RegisterView:
     self.entry_confirm.pack()
 
     ttk.Button(
-      frame, text="Registrar", style='Green.TButton',
+      frame, text="Registrar", bootstyle="success", cursor="hand2",
       width=20, command=self.on_register_click
     ).pack(pady=15)
 
     ttk.Button(
-      frame, text="Já tenho conta → Login",
+      frame, text="Já tenho conta → Login", cursor="hand2",
       command=self.on_login_click
     ).pack()
 

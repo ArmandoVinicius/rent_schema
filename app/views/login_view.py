@@ -1,7 +1,7 @@
 # src/views/login_view.py
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
+import ttkbootstrap as ttk
 from app.utils.ui import center_window
 
 class LoginView:
@@ -18,9 +18,6 @@ class LoginView:
     self.build_ui()
 
   def build_ui(self):
-    style = ttk.Style()
-    style.configure('Green.TButton', background="#4CAF50", foreground="white")
-
     frame = tk.Frame(self.root, padx=20, pady=20)
     frame.pack(expand=True)
 
@@ -35,7 +32,7 @@ class LoginView:
     self.entry_senha.pack()
 
     ttk.Button(
-      frame, text="Entrar", style='Green.TButton',
+      frame, text="Entrar", bootstyle='success',
       width=20, command=self.on_login_click
     ).pack(pady=15)
 

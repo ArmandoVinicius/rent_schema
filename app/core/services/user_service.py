@@ -10,6 +10,10 @@ class UserService:
       return False, "Preencha todos os campos."
     if senha != confirm:
       return False, "As senhas não coincidem."
+    if len(cpf) != 11 or not cpf.isdigit():
+      return False, "CPF deve conter 11 números."
+    if len(telefone) != 11 or not telefone.isdigit():
+      return False, "Telefone deve conter 11 números."
     if self.user_model.get_user_by_cpf(cpf=cpf):
       return False, "Este CPF já está cadastrado."
     
@@ -24,10 +28,10 @@ class UserService:
   def login_user(self, cpf: str, senha: str):
     user = self.user_model.get_user_by_cpf(cpf=cpf)
     if not user:
-      return False, "Usuário não encontrado."
+      return False, "Usuário ou senha incorretos.", None
     
     senha_hash = hashlib.sha256(senha.encode()).hexdigest()
     if user['senha_hash'] != senha_hash:
-      return False, "Senha incorreta."
+      return False, "Usuário ou senha incorretos.", None
     
-    return True, "Login bem-sucedido."
+    return True, "Login bem-sucedido.", user

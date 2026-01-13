@@ -1,44 +1,73 @@
-# src/models/modelo_model.py
-from ..database.connection import DatabaseConnection
+# app/models/modelo_model.py
+from app.database.connection import DatabaseConnection
 
 class ModeloModel:
-  def __init__(self):
-    pass
-  
+  ALLOWED_FIELDS = {"Descricao", "Marca", "Categoria"}
+
   def create_modelo(self, descricao: str, marca: str, categoria: str):
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute("""
-      INSERT INTO Modelo (Descricao, Marca, Categoria)
-      VALUES (?, ?, ?)
-    """, (descricao, marca, categoria))
+    try:
+      cursor.execute("""
+        INSERT INTO Modelo (Descricao, Marca, Categoria)
+        VALUES (%s, %s, %s)
+      """, (descricao, marca, categoria))
+      conn.commit()
+    finally:
+      cursor.close()
+      conn.close()
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+  def list_modelos(self) -> list[dict]:
+    conn = DatabaseConnection.get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+      cursor.execute("""
+        SELECT ID_Modelo, Marca, Descricao, Categoria
+        FROM Modelo
+        ORDER BY Marca, Descricao
+      """)
+      return cursor.fetchall()
+    finally:
+      cursor.close()
+      conn.close()
 
-  def get_modelo_by_id(self, id_modelo: int) -> bool:
+  def get_modelo_by_id(self, id_modelo: int) -> dict | None:
+    conn = DatabaseConnection.get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+      cursor.execute("""
+        SELECT ID_Modelo, Marca, Descricao, Categoria
+        FROM Modelo
+        WHERE ID_Modelo = %s
+      """, (id_modelo,))
+      return cursor.fetchone()
+    finally:
+      cursor.close()
+      conn.close()
+
+  def update_modelo(self, id_modelo: int, field: str, value):
+    if field not in self.ALLOWED_FIELDS:
+      raise ValueError(f"Campo inválido: {field}")
+
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT ID_Modelo FROM Modelo WHERE ID_Modelo = ?", (id_modelo,))
-    result = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
-    return result is not None
-
-  def update_modelo(self, id_modelo: int, field: str, value: str | int | float):
-    conn = DatabaseConnection.get_connection()
-    cursor = conn.cursor()
-    cursor.execute(f"UPDATE Modelo SET {field} = ? WHERE ID_Modelo = ?", (value, id_modelo))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    try:
+      cursor.execute(f"""
+        UPDATE Modelo
+        SET {field} = %s
+        WHERE ID_Modelo = %s
+      """, (value, id_modelo))
+      conn.commit()
+    finally:
+      cursor.close()
+      conn.close()
 
   def delete_modelo(self, id_modelo: int):
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM Modelo WHERE ID_Modelo = ?", (id_modelo,))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    try:
+      cursor.execute("DELETE FROM Modelo WHERE ID_Modelo = %s", (id_modelo,))
+      conn.commit()
+    finally:
+      cursor.close()
+      conn.close()
