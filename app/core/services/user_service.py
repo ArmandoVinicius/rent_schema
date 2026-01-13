@@ -1,4 +1,4 @@
-from models.user_model import UserModel
+from app.models.user_model import UserModel
 import hashlib
 
 class UserService:
@@ -13,7 +13,6 @@ class UserService:
     if self.user_model.get_user_by_cpf(cpf=cpf):
       return False, "Este CPF já está cadastrado."
     
-    # Olhar o bcrypt para adicionar o tempo na seed
     senha_hash = hashlib.sha256(senha.encode()).hexdigest()
 
     try:
@@ -21,3 +20,14 @@ class UserService:
       return True, "Usuário registrado com sucesso!"
     except Exception as e:
       return False, f"Erro ao registrar: {e}"
+    
+  def login_user(self, cpf: str, senha: str):
+    user = self.user_model.get_user_by_cpf(cpf=cpf)
+    if not user:
+      return False, "Usuário não encontrado."
+    
+    senha_hash = hashlib.sha256(senha.encode()).hexdigest()
+    if user['senha_hash'] != senha_hash:
+      return False, "Senha incorreta."
+    
+    return True, "Login bem-sucedido."

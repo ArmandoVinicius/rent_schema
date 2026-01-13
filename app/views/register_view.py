@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from app.utils.ui import center_window
 
 class RegisterView:
   def __init__(self, root, controller):
@@ -10,8 +11,9 @@ class RegisterView:
     self.controller.set_view(self)
 
     root.title("Registro - Aluguel de Carros")
-    root.geometry("400x580")
     root.resizable(False, False)
+    
+    center_window(root, 400, 580)
 
     self.build_ui()
 
@@ -81,9 +83,6 @@ class RegisterView:
 
   def on_register_click(self):
     self.controller.register()
-
-  # def destroy_window(self):
-  #   self.window.destroy()
 
   def show_info(self, msg_title: str, message: str):
     messagebox.showinfo(msg_title, message)

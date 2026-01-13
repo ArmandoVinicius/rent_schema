@@ -1,7 +1,10 @@
-from core.services.user_service import UserService
+from app.core.services.user_service import UserService
+from app.views.login_view import LoginView
+from app.utils.ui import clear_root
 
 class RegisterController:
-  def __init__(self):
+  def __init__(self, root):
+    self.root = root
     self.user_service = UserService()
   
   def set_view(self, view):
@@ -24,8 +27,7 @@ class RegisterController:
       self.view.show_error("Erro!", msg)
 
   def go_to_login(self):
-    pass
-  #   self.view.show_frame("LoginView")
-    
-  #   login_controller = LoginController()
-  #   LoginView(root, login_controller)
+    clear_root(self.root)
+    from app.controllers.login_controller import LoginController
+    login_controller = LoginController(self.root)
+    LoginView(self.root, login_controller)

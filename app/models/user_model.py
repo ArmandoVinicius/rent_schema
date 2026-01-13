@@ -1,5 +1,5 @@
 # src/models/user_model.py
-from ..database.connection import DatabaseConnection
+from app.database.connection import DatabaseConnection
 
 class UserModel:
   def __init__(self):
@@ -9,8 +9,8 @@ class UserModel:
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
     cursor.execute("""
-      INSERT INTO Cliente (CPF, Nome, CNH, Telefone, senha)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO Cliente (CPF, Nome, CNH, Telefone, senha_hash)
+      VALUES (%s, %s, %s, %s, %s)
     """, (cpf, nome, cnh, telefone, senha_hash))
 
     conn.commit()
@@ -20,7 +20,7 @@ class UserModel:
   def get_user_by_cpf(self, cpf: str) -> bool:
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT ID_cliente FROM Cliente WHERE cpf = ?", (cpf,))
+    cursor.execute("SELECT ID_cliente FROM Cliente WHERE CPF = %s", (cpf,))
     result = cursor.fetchone()
 
     cursor.close()
@@ -30,7 +30,7 @@ class UserModel:
   def update_user(self, cpf: str, field: str, value: str | int | float):
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute(f"UPDATE Cliente SET {field} = ? WHERE cpf = ?", (value,cpf))
+    cursor.execute(f"UPDATE Cliente SET {field} = %s WHERE cpf = %s", (value,cpf))
     conn.commit()
     cursor.close()
     conn.close()
@@ -38,7 +38,7 @@ class UserModel:
   def delete_user(self, cpf: str):
     conn = DatabaseConnection.get_connection()
     cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM Cliente WHERE cpf = ?", (cpf,))
+    cursor.execute(f"DELETE FROM Cliente WHERE cpf = %s", (cpf,))
     conn.commit()
     cursor.close()
     conn.close()
