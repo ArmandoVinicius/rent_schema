@@ -1,44 +1,45 @@
-# src/models/user_model.py
 from app.database.connection import DatabaseConnection
 
 class UserModel:
-  def __init__(self):
-    pass
-  
-  def create_user(self, cpf: str, nome: str, cnh: str, telefone: str, senha_hash: str):
-    conn = DatabaseConnection.get_connection()
-    cursor = conn.cursor()
-    cursor.execute("""
-      INSERT INTO Cliente (CPF, Nome, CNH, Telefone, senha_hash)
-      VALUES (%s, %s, %s, %s, %s)
-    """, (cpf, nome, cnh, telefone, senha_hash))
+    def create_user(self, cpf: str, nome: str, cnh: str, telefone: str, senha_hash: str):
+        conn = DatabaseConnection.get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("""
+                INSERT INTO Cliente (CPF, Nome, CNH, Telefone, senha_hash)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (cpf, nome, cnh, telefone, senha_hash))
+            conn.commit()
+        finally:
+            cursor.close()
+            conn.close()
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+    def get_user_by_cpf(self, cpf: str) -> dict | None:
+        conn = DatabaseConnection.get_connection()
+        cursor = conn.cursor(dictionary=True)
+        try:
+            cursor.execute("SELECT * FROM Cliente WHERE CPF = %s", (cpf,))
+            return cursor.fetchone()
+        finally:
+            cursor.close()
+            conn.close()
 
-  def get_user_by_cpf(self, cpf: str) -> bool:
-    conn = DatabaseConnection.get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Cliente WHERE CPF = %s", (cpf,))
-    result = cursor.fetchone()
+    def update_user(self, cpf: str, field: str, value: str | int | float):
+        conn = DatabaseConnection.get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute(f"UPDATE Cliente SET {field} = %s WHERE CPF = %s", (value, cpf))
+            conn.commit()
+        finally:
+            cursor.close()
+            conn.close()
 
-    cursor.close()
-    conn.close()
-    return result if result is not None else None
-
-  def update_user(self, cpf: str, field: str, value: str | int | float):
-    conn = DatabaseConnection.get_connection()
-    cursor = conn.cursor()
-    cursor.execute(f"UPDATE Cliente SET {field} = %s WHERE cpf = %s", (value,cpf))
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-  def delete_user(self, cpf: str):
-    conn = DatabaseConnection.get_connection()
-    cursor = conn.cursor()
-    cursor.execute(f"DELETE FROM Cliente WHERE cpf = %s", (cpf,))
-    conn.commit()
-    cursor.close()
-    conn.close()
+    def delete_user(self, cpf: str):
+        conn = DatabaseConnection.get_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute("DELETE FROM Cliente WHERE CPF = %s", (cpf,))
+            conn.commit()
+        finally:
+            cursor.close()
+            conn.close()
