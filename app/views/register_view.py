@@ -18,16 +18,6 @@ class RegisterView:
     self.build_ui()
 
   def build_ui(self):
-    # style = ttk.Style()
-    # style.theme_use('clam')
-    # style.configure(
-    #   "Green.TButton",
-    #   background="#4CAF50",
-    #   foreground="white",
-    #   padding=6,
-    #   borderwidth=0
-    # )
-
     frame = tk.Frame(self.root, padx=20, pady=20)
     frame.pack(expand=True)
 

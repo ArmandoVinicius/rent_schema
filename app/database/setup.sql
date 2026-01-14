@@ -194,3 +194,8 @@ INSERT IGNORE INTO Carro (
     'manutencao',
     (SELECT ID_Modelo FROM Modelo WHERE Marca='Chevrolet' AND Descricao='Onix')
 );
+
+ALTER TABLE Aluguel
+ADD COLUMN Status_Aluguel ENUM('pendente','pago','cancelado') NOT NULL DEFAULT 'pendente';
+
+alter table aluguel modify matricula int null;

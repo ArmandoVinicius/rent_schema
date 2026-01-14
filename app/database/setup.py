@@ -60,6 +60,7 @@ def create_tables():
                 Marca VARCHAR(50) NOT NULL,
                 Descricao VARCHAR(100) NOT NULL,
                 Categoria VARCHAR(50) NOT NULL,
+                Valor_Diaria DECIMAL(10,2) NOT NULL,
 
                 PRIMARY KEY (ID_Modelo),
                 UNIQUE KEY uq_modelo (Marca, Descricao, Categoria)
@@ -96,11 +97,11 @@ def create_tables():
                 Data_Fim DATETIME,
                 Data_devolucao_real DATETIME,
                 Valor_Total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+                Status_Aluguel ENUM('pendente','pago','cancelado') NOT NULL DEFAULT 'pendente',
 
                 fk_Cliente_ID_cliente INT NOT NULL,
                 fk_Carro_Placa CHAR(7) NOT NULL,
-                Matricula INT NOT NULL,
-
+                Matricula INT NULL,
                 PRIMARY KEY (ID_Aluguel),
 
                 CONSTRAINT fk_aluguel_cliente
@@ -158,16 +159,16 @@ def create_tables():
             ON DUPLICATE KEY UPDATE
                 cargo = 'admin';""",
             
-            """INSERT INTO Modelo (Marca, Descricao, Categoria)
+            """INSERT INTO Modelo (Marca, Descricao, Categoria, Valor_Diaria)
                 VALUES
-                ('Toyota', 'Corolla', 'sedan'),
-                ('Fiat', 'Argo', 'hatch'),
-                ('Chevrolet', 'S10', 'picape'),
-                ('Honda', 'Civic', 'sedan'),
-                ('Volkswagen', 'Gol', 'hatch'),
-                ('Chevrolet', 'Onix', 'hatch'),
-                ('Jeep', 'Renegade', 'suv'),
-                ('Hyundai', 'Creta', 'suv')
+                ('Toyota', 'Corolla', 'sedan', 120.00),
+                ('Fiat', 'Argo', 'hatch', 100.00),
+                ('Chevrolet', 'S10', 'picape', 150.00),
+                ('Honda', 'Civic', 'sedan', 130.00),
+                ('Volkswagen', 'Gol', 'hatch', 90.00),
+                ('Chevrolet', 'Onix', 'hatch', 95.00),
+                ('Jeep', 'Renegade', 'suv', 140.00),
+                ('Hyundai', 'Creta', 'suv', 135.00)
             ON DUPLICATE KEY UPDATE Categoria = VALUES(Categoria);""",
             
             """INSERT INTO Carro (
