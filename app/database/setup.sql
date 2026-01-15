@@ -9,7 +9,6 @@ DROP TABLE IF EXISTS Pagamento;
 DROP TABLE IF EXISTS Aluguel;
 DROP TABLE IF EXISTS Carro;
 DROP TABLE IF EXISTS Modelo;
-DROP TABLE IF EXISTS Funcionario;
 DROP TABLE IF EXISTS Cliente;
 
 -- CRIAÇÃO DAS TABELAS
@@ -20,19 +19,10 @@ CREATE TABLE Cliente (
     Nome VARCHAR(100) NOT NULL,
     CNH VARCHAR(20),
     Telefone VARCHAR(20),
-    Endereco VARCHAR(150),
     senha_hash VARCHAR(255) NOT NULL,
     cargo ENUM('user', 'admin') NOT NULL DEFAULT 'user',
     PRIMARY KEY (ID_cliente),
     UNIQUE KEY uq_cliente_cpf (CPF)
-);
-
-CREATE TABLE Funcionario (
-    Matricula INT NOT NULL AUTO_INCREMENT,
-    Nome VARCHAR(100) NOT NULL,
-    Data_Admissao DATE NOT NULL,
-    Cargo VARCHAR(50) NOT NULL,
-    PRIMARY KEY (Matricula)
 );
 
 CREATE TABLE Modelo (
@@ -70,7 +60,6 @@ CREATE TABLE Aluguel (
     Status_Aluguel ENUM('pendente','pago','cancelado') NOT NULL DEFAULT 'pendente',
     fk_Cliente_ID_cliente INT NOT NULL,
     fk_Carro_Placa CHAR(7) NOT NULL,
-    Matricula INT NULL,
     PRIMARY KEY (ID_Aluguel),
     CONSTRAINT fk_aluguel_cliente
         FOREIGN KEY (fk_Cliente_ID_cliente)
@@ -82,11 +71,6 @@ CREATE TABLE Aluguel (
         REFERENCES Carro (Placa)
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
-    CONSTRAINT fk_aluguel_funcionario
-        FOREIGN KEY (Matricula)
-        REFERENCES Funcionario (Matricula)
-        ON UPDATE CASCADE
-        ON DELETE RESTRICT
 );
 
 CREATE TABLE Pagamento (
